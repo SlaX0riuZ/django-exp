@@ -38,8 +38,6 @@ experimenting with django framework
 - add line: from django.urls import path
 - add line: from . import views
 - add line: urlpatterns=\[path\('', views.home, name='home'\),\]
-
-___
 - goto urls.py in projectname
 - add include library to from django.urls import path (-> from django.urls import path, include)
 - add line under urlpatterns array: path('', include('applicationname.urls'))
