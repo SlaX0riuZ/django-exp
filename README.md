@@ -41,3 +41,7 @@ experimenting with django framework
 - goto urls.py in projectname
 - add include library to from django.urls import path (-> from django.urls import path, include)
 - add line under urlpatterns array: path('', include('applicationname.urls'))
+
+#### start working with HTML
+- replace boilerplate link with the "Include via CDN" top link from getbootstrap.com
+- now you're able to use stuff from bootstrap!
