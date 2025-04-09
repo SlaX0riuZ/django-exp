@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+{% extends 'index.html' %} <!-- get everything from index.html! -->
+
+{% block content %}
+
+<!-- add content unique to page in here -->
+    <table class="table table-striped-columns">
+        <thead>
+            <tr>
+                <th scope='col'>Challenge Name</th>
+                <th scope='col'>Summary</th>
+                <th scope='col'>Flag Value</th>
+                <th scope='col'>Point Value</th> <!-- th = 'table header'-->
+            </tr>
+        </thead>
+        <tbody>
+                {% for i in challenges %}
+                    <tr>
+                        <td>{{i.name}}</td>
+                        <td>{{i.summary}}</td>
+                        <td>{{i.flag_value}}</td>
+                        <td>{{i.points}}</td>
+                {% endfor %}
+    </table>
+
+{% endblock %}

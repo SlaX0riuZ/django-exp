@@ -12,6 +12,7 @@ experimenting with django framework
 - terminal: django-admin startproject projectname
 - if that doesn't work, try: python -m django startproject projectname
 
+# Steps for a boilerplate website and database
 #### get into the folder with the app
 - terminal: cd projectname
 - terminal: ls (if you see manage.py you got it)
@@ -45,3 +46,15 @@ experimenting with django framework
 #### start working with HTML
 - replace boilerplate link with the "Include via CDN" top link from getbootstrap.com
 - now you're able to use stuff from bootstrap!
+
+#### create 'superuser' account
+- terminal: python manage.py createsuperuser
+
+#### make the database live
+- terminal: cd projectname
+- terminal: python manage.py migrate (db.sqlite3 should become modified!)
+- for every model made, terminal: python manage.py makemigrations
+- for every model made, terminal: python manage.py migrate
+- in admin.py: add line: from .models import *
+- in admin.py: add line: admin.site.register(modelname)
+- in views.py: add line: from .models import *
