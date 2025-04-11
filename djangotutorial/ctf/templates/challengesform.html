@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+{% extends 'index.html' %}
+
+{% block content%}
+
+    <form method='POST'>
+
+        {% csrf_token %} <!-- security mechanism to prevent SQL injections -->
+        {{ form.as_p }} <!-- renders form fields as paragraphs -->
+        <button type='submit' class='btn btn-primary'>Submit Form</button>
+
+    </form>
+
+{% endblock %}
