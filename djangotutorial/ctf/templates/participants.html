@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+{% extends 'index.html' %}
+
+{% block content %}
+    <table class="table table-striped-columns">
+        <thead>
+            <tr>
+                <th scope='col'>Username</th>
+                <th scope='col'>Flags Solved</th>
+                <th scope='col'>Total Points</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for i in participants %}
+                    <tr>
+                        <td>{{i.user.username}}</td>
+                        <td>{{i.flags_solved}}</td>
+                        <td>{{i.total_points}}</td>
+                {% endfor %}
+    </table>
+{% endblock %}

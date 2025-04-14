@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from .forms import *
+
 # Create your views here.
 def home(request): return render(request, 'index.html')
 
@@ -21,6 +22,13 @@ def challengesform(request):
         form = ChallengeForm(request.POST)
         if form.is_valid():
             form.save() # save form data into database and in proper fields
-            return render(request, 'challengesfrm.html', {'form': form, 'success': True})
+            return render(request, 'challengesform.html', {'form': form, 'success': True})
     else: form = ChallengeForm() # display the form if it wasn't submitted (viewing page)
     return render(request, 'challengesform.html', {'form': form})
+
+def participants(request):
+
+    participants = Participant.objects.all()
+    return render(request, 'participants.html', {
+        'participants': participants,
+    })
