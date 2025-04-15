@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 from .models import *
 from .forms import *
 
@@ -22,7 +23,10 @@ def challengesform(request):
         form = ChallengeForm(request.POST)
         if form.is_valid():
             form.save() # save form data into database and in proper fields
+            messages.success(request, f'Form has been successfully submitted.')
             return render(request, 'challengesform.html', {'form': form, 'success': True})
+        else:
+            messages.error(request, f'An error has occurred while submitting your form. Please check your fields.')
     else: form = ChallengeForm() # display the form if it wasn't submitted (viewing page)
     return render(request, 'challengesform.html', {'form': form})
 
