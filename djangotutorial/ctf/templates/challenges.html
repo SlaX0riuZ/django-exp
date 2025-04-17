@@ -19,7 +19,13 @@
                     <tr>
                         <td>{{i.name}}</td>
                         <td>{{i.summary}}</td>
-                        <td>{{i.flag_value}}</td>
+
+                        <td>
+                            {% for flags in i.flags_solved.all %}
+                                {{flags.name}},
+                            {% endfor %}
+                        </td>
+                        
                         <td>{{i.points}}</td>
                 {% endfor %}
     </table>
