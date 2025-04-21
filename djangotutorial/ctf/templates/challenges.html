@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-
 {% extends 'index.html' %} <!-- get everything from index.html! -->
-
 {% block content %}
-
 <!-- add content unique to page in here -->
     <table class="table table-striped-columns">
         <thead>
@@ -19,7 +16,6 @@
                     <tr>
                         <td>{{i.name}}</td>
                         <td>{{i.summary}}</td>
-
                         <td>
                             {% for flags in i.flags_solved.all %}
                                 {{flags.name}},
@@ -29,5 +25,4 @@
                         <td>{{i.points}}</td>
                 {% endfor %}
     </table>
-
 {% endblock %}

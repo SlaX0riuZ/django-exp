@@ -35,15 +35,14 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'participants' %}">Participants</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'challengecompletion' %}">Challenges Submission</a>
                 </ul>
               </div>
             </div>
           </nav>
-
           {% block content %} <!-- everything above this point will be copied -->
-
           <h2>Welcome back, {{ request.user.get_full_name }}!</h2>
-
           {% endblock %} <!-- and below this, too! -->
     </body>
 </html>

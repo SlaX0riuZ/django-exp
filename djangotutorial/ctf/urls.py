@@ -6,4 +6,5 @@ urlpatterns = [
     path('challenges/', views.challenges, name='challenges'),
     path('challengesform/', views.challengesform, name='challengesform'),
     path('participants/', views.participants, name='participants'),
+    path('challengecompletion/', views.submit_flag, name='challengecompletion'),
 ]

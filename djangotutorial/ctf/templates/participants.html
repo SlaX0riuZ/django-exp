@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 {% extends 'index.html' %}
-
 {% block content %}
     <table class="table table-striped-columns">
         <thead>
@@ -15,7 +13,11 @@
                 {% for i in participants %}
                     <tr>
                         <td>{{i.user.username}}</td>
-                        <td>{{i.flags_solved}}</td>
+                        <td>
+                            {% for flags in i.flags_solved.all %}
+                                {{flags.name}},
+                            {% endfor %}
+                        </td>
                         <td>{{i.total_points}}</td>
                 {% endfor %}
     </table>

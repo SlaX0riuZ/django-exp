@@ -8,8 +8,7 @@ class Challenge(models.Model):
     flag_value = models.CharField(max_length=255, unique=True)
     points = models.IntegerField(default=10)
 
-    def __str__(self):
-        return self.name
+    def __str__(self): return self.name
 
 class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -21,3 +20,10 @@ class Participant(models.Model):
     def update_points(self):
         self.total_points = sum(challenge.points for challenge in self.flags_solved.all())
         self.save()
+
+class ChallengeCompletion(models.Model):
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True) # Time of Completion
+    start_time = models.DateTimeField(null=True, blank=True) # Track start time
+    def __str__(self): return f'{self.participant.user.username} completed {self.challenge.name}.'
