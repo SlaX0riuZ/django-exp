@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import *
 from .forms import *
@@ -62,3 +62,35 @@ def submit_flag(request):
     else: form = FlagSubmissionForm()
     return render(request,'submit_flag.html',{'form':form})
 
+def challenges(request):
+    challenges = Challenge.objects.all()
+    participant = None
+    solved_challenge_ids = []
+    if request.user.is_authenticated:
+        participant = Participant.objects.get(user=request.user)
+        solved_challenge_ids = participant.flags_solved.values_list('id', flat=True) # Gets IDs of solved challenges
+        print(f'Participant: {participant}, Type: {type(participant)}') # Debugging
+        print(f'Solved Challenges: {solved_challenge_ids}') # Debugging
+    return render(request, 'challenges.html', {
+        'challenges': challenges,
+        'participant': participant,
+        'solved_challenge_ids': solved_challenge_ids,
+        # No 'notify' or 'operations' here.
+    })
+
+def challenge_detail(request, challenge_id):
+    challenge = get_object_or_404(Challenge, id=challenge_id)
+    return render(request, 'challenge_detail.html', {'challenge':challenge}) # no notify or operations
+
+def start_challenge(request, challenge_id):
+    challenge = get_object_or_404(Challenge, id=challenge_id)
+    participant, created = Participant.objects.get_or_create(user=request.user)
+    completion, created = ChallengeCompletion.objects.get_or_create(
+        participant = participant, challenge = challenge
+    )
+
+    if not completion.start_time:
+        completion.start_time = timezone.now()
+        completion.save()
+        return JsonResponse({'status': 'success', 'message': 'Challenge Started!'})
+    return JsonResponse({'status': 'exists', 'message': 'Challenge Already Started!'})

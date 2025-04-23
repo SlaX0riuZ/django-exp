@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="banner">{{ challenge.name}}</h1><br><br><br><br></h1>
+        <div class="card shadow" style="text-align:left;">
+            <div class="card-body" style="text-align:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ff742e" class="bi bi-award-fill" viewBox="0 0 16 16">
+                    <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 61.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 121-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 61-.306-1.854 1.337-1.32.842-1.68L6.331.864z"/>
+                    <path d="M4 11.794V1614-1 4 1v-4.2061-2.018.306L8 13.126 6.018 12.1z"/>
+                </svg>
+                <p><strong>Points:</strong> {{ challenge.points }}</p>
+                <p><strong>Description:</strong></p>
+                <p>{{ challenge.description }}</p>
+
+                <!-- Submit Flag Link -->
+
+                <a class="btn btn-primary" href="{% url 'submit_flag' %}" >Submit Flag</a>
+        <BR><BR><BR>
+                <a href="{% url 'challenges' %}" class="btn btn-secondary">Back to Challenges</a>
+            </div>
+            <div id="timerbox">
+                <b>Time Remaining:
+                <br><p id="timer"> </p></b>
+            </div>
+            <footer class="footer" style="bottom: -400px; width: 100%;position:absolute;">
+            <div class="container">
+                <p>&copy; 2025 schoolsToday, LLC. - CyberCTF. All rights reserved.</p>
+                <p>Contact us: <a href="mailto:markyoungit@gmail.com">info@schools todayctf.com</a></p>
+                <center><img src="https://wghallpass.s3.us-east-1.amazonaws.com/images/schooltodaylogollc.png" width="200px"></center>
+                <br>
+            </div>
+        </footer>
+    </div>
+    <script>
+        var timerdate = "{{operations.timer}}";
+        // Set the date we're counting down to
+        var countDownDate = new Date(timerdate).getTime();
+        // Update the count down every second
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000*60*60*24));
+            var hours = Math.floor((distance % (100*60*60*24)) / (1000*60*60));
+            var minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+            var seconds = Math.floor((distance % (1000*60)) / 1000);
+
+            document.getElementById('timer').innerHTML = hours + 'h ' + minutes + 'm ' + seconds + 's ';
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById('timer').innerHTML = 'EXPIRED';
+            }
+        }, 1000);
+        document.addEventListener('DOMContentLoaded', function() {
+            let challengeId = '{{challenge.id}}';
+            fetch(`/start_challenge/${challengeId}/`), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => console.log(data.message));
+        });
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                let cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue
+        }
+    </script>
+
+{% endblock %}
