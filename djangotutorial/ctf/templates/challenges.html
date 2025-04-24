@@ -9,6 +9,7 @@
                 <th scope='col'>Summary</th>
                 <th scope='col'>Flag Value</th>
                 <th scope='col'>Point Value</th> <!-- th = 'table header'-->
+                <th scope='col'></th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,7 @@
                         </td>
                         
                         <td>{{i.points}}</td>
+                        <td><a href="{% url 'challenge_detail' i.id %}" class='btn btn-primary'>View Challenge</a></td>
                 {% endfor %}
     </table>
 {% endblock %}

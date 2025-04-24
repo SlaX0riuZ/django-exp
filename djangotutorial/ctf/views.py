@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.utils import timezone
+from django.http import JsonResponse
 
 # Create your views here.
 def home(request): return render(request, 'index.html')
