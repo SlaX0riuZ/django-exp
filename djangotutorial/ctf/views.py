@@ -5,8 +5,15 @@ from .forms import *
 from django.utils import timezone
 from django.http import JsonResponse
 
+try: notify = Notification.objects.first()
+except: notify = ''
+
+try: operations = Operation.objects.first()
+except: operations = ''
 # Create your views here.
-def home(request): return render(request, 'index.html')
+def home(request): return render(request, 'index.html', {
+    'notify':notify, 'operations':operations,
+})
 
 def challenges(request): 
 
@@ -18,6 +25,7 @@ def challenges(request):
 
     return render(request, 'challenges.html', {
         'challenges': challenges,
+        'notify':notify, 'operations':operations,
         })
 
 def challengesform(request):
@@ -30,13 +38,14 @@ def challengesform(request):
         else:
             messages.error(request, f'An error has occurred while submitting your form. Please check your fields.')
     else: form = ChallengeForm() # display the form if it wasn't submitted (viewing page)
-    return render(request, 'challengesform.html', {'form': form})
+    return render(request, 'challengesform.html', {'form': form, 'notify':notify, 'operations':operations,})
 
 def participants(request):
 
     participants = Participant.objects.all()
     return render(request, 'participants.html', {
         'participants': participants,
+        'notify':notify, 'operations':operations,
     })
 
 def submit_flag(request):
@@ -61,7 +70,7 @@ def submit_flag(request):
                 else: messages.error(request, 'You have already submitted this flag!')
             except Challenge.DoesNotExist: messages.error(request, 'Invalid Flag, please try again.')
     else: form = FlagSubmissionForm()
-    return render(request,'submit_flag.html',{'form':form})
+    return render(request,'submit_flag.html',{'form':form, 'notify':notify, 'operations':operations,})
 
 def challenges(request):
     challenges = Challenge.objects.all()
@@ -81,7 +90,7 @@ def challenges(request):
 
 def challenge_detail(request, challenge_id):
     challenge = get_object_or_404(Challenge, id=challenge_id)
-    return render(request, 'challenge_detail.html', {'challenge':challenge}) # no notify or operations
+    return render(request, 'challenge_detail.html', {'challenge':challenge, 'notify':notify, 'operations':operations,}) # no notify or operations
 
 def start_challenge(request, challenge_id):
     challenge = get_object_or_404(Challenge, id=challenge_id)
@@ -95,3 +104,8 @@ def start_challenge(request, challenge_id):
         completion.save()
         return JsonResponse({'status': 'success', 'message': 'Challenge Started!'})
     return JsonResponse({'status': 'exists', 'message': 'Challenge Already Started!'})
+
+def leaderboard(request):
+    participants = Participant.objects.all().order_by('-total_points')
+    current_user_flags = request.user.participant.flags_solved.all()
+    return render(request, 'leaderboard.html', {'participants': participants,'current_user_flags': current_user_flags'notify': notify,'operations': operations})
