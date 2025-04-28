@@ -1,0 +1,65 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+    <div class='container mt-5'>
+        <div class='card shadow' style='text-align:center;'>
+            <div class='card-body'>
+                <h2>Leaderboard</h2>
+                <table class='table table-striped'>
+                    <head>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Username</th>
+                            <th>Points</th>
+                            <th>Flags Solved</th>
+                        <tr>
+                    </head>
+                    <tbody>
+                        {% for participant in participants %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ participant.user.username }}</td>
+                            <td>{{ participant.total_points }}</td>
+                            <td>
+                                {% for flag in participant.flags_solved.all %}
+                                    {{ flag.name }}
+                                    {% if flag in current_user_flags %}
+                                        <span class='text-danger'>🎌</span>
+                                    {% endif %}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id='timerbox'>
+            <b>Time Remaining:
+        <br><p id='timer' ></p></b>
+            </div>
+            <!--
+                <script>
+        var timerdate = "{{operations.timer}}";
+        // Set the date we're counting down to
+        var countDownDate = new Date(timerdate).getTime();
+        // Update the count down every second
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000*60*60*24));
+            var hours = Math.floor((distance % (100*60*60*24)) / (1000*60*60));
+            var minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+            var seconds = Math.floor((distance % (1000*60)) / 1000);
+
+            document.getElementById('timer').innerHTML = hours + 'h ' + minutes + 'm ' + seconds + 's ';
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById('timer').innerHTML = 'EXPIRED';
+            }
+        }, 1000);
+            -->
+
+
+{% endblock %}

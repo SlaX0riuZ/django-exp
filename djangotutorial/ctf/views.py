@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from .models import *
 from .forms import *
+from django.contrib.auth import login
 from django.utils import timezone
 from django.http import JsonResponse
 
@@ -108,4 +110,23 @@ def start_challenge(request, challenge_id):
 def leaderboard(request):
     participants = Participant.objects.all().order_by('-total_points')
     current_user_flags = request.user.participant.flags_solved.all()
-    return render(request, 'leaderboard.html', {'participants': participants,'current_user_flags': current_user_flags'notify': notify,'operations': operations})
+    return render(request, 'leaderboard.html', {
+        'participants': participants,
+        'current_user_flags': current_user_flags,
+        'notify': notify,
+        'operations': operations,
+    })
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST) # in text: 'CustomUserCreationForm()'
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else: form = UserCreationForm() # in text: 'CustomUserCreationForm()'
+    return render(request, 'registration/register.html', {
+        'form': form,
+        'notify': notify,
+        'operations': operations,
+    })

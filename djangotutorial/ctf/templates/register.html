@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+    <div class='container mt-5'>
+        <div class='card shadow' style='text-align:left;'>
+            <div class='card-body'>
+                <h2>Register</h2>
+                <form method='post'>
+                    {% csrf_token %}
+                    <div class='mb-3'>
+                        <b>{{ form.username.label_tag }}</b>
+                        {{ form.username }}
+                    </div>
+                    <div class='mb-3'>
+                        <b>{{ form.email.label_tag }}</b>
+                        {{ form.email }}
+                    </div>
+                    <div class='mb-3'>
+                        <b>{{ form.first_name.label_tag }}</b>
+                        {{ form.first_name }}
+                    </div>
+                    <div class='mb-3'>
+                        <b>{{ form.last_name.label_tag }}</b>
+                        {{ form.last_name }}
+                    </div>
+                    <div class='mb-3'>
+                        <b>{{ form.password1.label_tag }}</b>
+                        {{ form.password1 }}
+                    </div>
+                    <div class='mb-3'>
+                        <b>{{ form.password2.label_tag }}</b>
+                        {{ form.password2 }}
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
