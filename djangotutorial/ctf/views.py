@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
 from .models import *
 from .forms import *
 from django.contrib.auth import login
@@ -119,13 +118,14 @@ def leaderboard(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST) # in text: 'CustomUserCreationForm()'
+        form = CustomUserCreationForm(request.POST) # in text: 'CustomUserCreationForm()'
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home')
-    else: form = UserCreationForm() # in text: 'CustomUserCreationForm()'
-    return render(request, 'registration/register.html', {
+    else: 
+        form = CustomUserCreationForm() # in text: 'CustomUserCreationForm()'
+    return render(request, 'register.html', {
         'form': form,
         'notify': notify,
         'operations': operations,
