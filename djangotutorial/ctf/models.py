@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from time import *
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 # Create your models here.
 class Challenge(models.Model):
@@ -37,7 +38,7 @@ class Operation(models.Model):
 
     def clean(self):
         try:
-            timezone.datetime.striptime(self.timer, '%B %d, %Y %H:%M:%S')
+            timezone.datetime.strptime(self.timer, '%B %d, %Y %H:%M:%S')
         except ValueError:
             raise ValidationError({
                 'timer': 'Timer must be in the format "March 18, 2025 15:37:25".'
